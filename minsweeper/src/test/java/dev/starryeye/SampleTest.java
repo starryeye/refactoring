@@ -1,4 +1,4 @@
-package cleancode;
+package dev.starryeye;
 
 import org.junit.jupiter.api.Test;
 
