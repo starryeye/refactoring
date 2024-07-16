@@ -34,24 +34,29 @@ public class MinesweeperGame {
             }
             String selectedCellInput = getSelectedCellFromUser(scanner);
             String selectedUserActionInput = getSelectedUserActionFromUser(scanner);
-            int selectedColIndex = getSelectedColIndexBy(selectedCellInput); // 메서드명에 전치사를 사용함으로써 파라미터와 연결지어 의미를 자연스럽게 전달할 수 있다.
-            int selectedRowIndex = getSelectedRowIndexBy(selectedCellInput);
-            if (doesUserSelectMarkingTheFlag(selectedUserActionInput)) {
-                BOARD[selectedRowIndex][selectedColIndex] = FLAG_SIGN;
-                changeGameStatusToWinIfAllCellIsOpened();
-            } else if (doesUserSelectOpeningTheCell(selectedUserActionInput)) {
-                if (isLandMineCell(selectedRowIndex, selectedColIndex)) {
-                    BOARD[selectedRowIndex][selectedColIndex] = LAND_MINE_SIGN;
-                    changeGameStatusToLose();
-                    continue;
-                } else {
-                    open(selectedRowIndex, selectedColIndex);
-                }
-                changeGameStatusToWinIfAllCellIsOpened();
-            } else {
-                System.out.println("잘못된 번호를 선택하셨습니다.");
-            }
+            actOnCell(selectedCellInput, selectedUserActionInput);
         }
+    }
+
+    private static void actOnCell(String selectedCellInput, String selectedUserActionInput) {
+        int selectedColIndex = getSelectedColIndexBy(selectedCellInput); // 메서드명에 전치사를 사용함으로써 파라미터와 연결지어 의미를 자연스럽게 전달할 수 있다.
+        int selectedRowIndex = getSelectedRowIndexBy(selectedCellInput);
+        if (doesUserSelectMarkingTheFlag(selectedUserActionInput)) {
+            BOARD[selectedRowIndex][selectedColIndex] = FLAG_SIGN;
+            changeGameStatusToWinIfAllCellIsOpened();
+            return;
+        }
+        if (doesUserSelectOpeningTheCell(selectedUserActionInput)) {
+            if (isLandMineCell(selectedRowIndex, selectedColIndex)) {
+                BOARD[selectedRowIndex][selectedColIndex] = LAND_MINE_SIGN;
+                changeGameStatusToLose();
+                return;
+            }
+            open(selectedRowIndex, selectedColIndex);
+            changeGameStatusToWinIfAllCellIsOpened();
+            return;
+        }
+        System.out.println("잘못된 번호를 선택하셨습니다.");
     }
 
     private static void changeGameStatusToLose() {
