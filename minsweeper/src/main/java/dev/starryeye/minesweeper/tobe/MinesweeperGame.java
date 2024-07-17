@@ -26,20 +26,26 @@ public class MinesweeperGame {
         initializeGame();
 
         while (true) {
-            showBoard();
+            try {
+                showBoard();
 
-            if (doesUserWinTheGame()) {
-                System.out.println("지뢰를 모두 찾았습니다. GAME CLEAR!");
-                break;
-            }
-            if (doesUserLoseTheGame()) {
-                System.out.println("지뢰를 밟았습니다. GAME OVER!");
-                break;
-            }
+                if (doesUserWinTheGame()) {
+                    System.out.println("지뢰를 모두 찾았습니다. GAME CLEAR!");
+                    break;
+                }
+                if (doesUserLoseTheGame()) {
+                    System.out.println("지뢰를 밟았습니다. GAME OVER!");
+                    break;
+                }
 
-            String selectedCellInput = getSelectedCellFromUser();
-            String selectedUserActionInput = getSelectedUserActionFromUser();
-            actOnCell(selectedCellInput, selectedUserActionInput);
+                String selectedCellInput = getSelectedCellFromUser();
+                String selectedUserActionInput = getSelectedUserActionFromUser();
+                actOnCell(selectedCellInput, selectedUserActionInput);
+            } catch (AppException e) {
+                System.out.println(e.getMessage()); // 개발자가 의도한 예외를 처리한다.
+            } catch (Exception e) {
+                System.out.println("프로그램에 문제가 생겼습니다."); // 게임을 그대로 진행하는 것이 정책이라 Exception 을 그냥 잡는다. 서버에서는 이렇게 처리하는 것은 안티패턴이며 원래는 던지거나 적절한 처리를 하는게 좋다.
+            }
         }
     }
 
@@ -65,7 +71,7 @@ public class MinesweeperGame {
             changeGameStatusToWinIfAllCellIsOpened();
             return;
         }
-        System.out.println("잘못된 번호를 선택하셨습니다.");
+        throw new AppException("입력하신 행위, [" + selectedUserActionInput + "] 값은 잘못된 입력입니다.");
     }
 
     private static void changeGameStatusToLose() {
@@ -123,11 +129,15 @@ public class MinesweeperGame {
     private static boolean isAllCellOpened() {
         return Arrays.stream(BOARD)
                 .flatMap(Arrays::stream)
-                .noneMatch(cell -> cell.equals(CLOSED_CELL_SIGN));
+                .noneMatch(CLOSED_CELL_SIGN::equals); // cell -> cell.equals(CLOSED_CELL_SIGN) 은 cell 값이 null 이면 NPE 이다.. 좀더 안전하게 상수에서 equals 를 호출하여 NPE 발생을 막는다.
     }
 
     private static int convertRowFrom(char enteredCellRow) {
-        return Character.getNumericValue(enteredCellRow) - 1;
+        int rowIndex = Character.getNumericValue(enteredCellRow) - 1;
+        if (rowIndex < 0 || rowIndex >= BOARD_ROW_SIZE) {
+            throw new AppException("입력하신 Row, [" + enteredCellRow + "] 값은 잘못된 입력입니다.");
+        }
+        return rowIndex;
     }
 
     private static int convertColFrom(char enteredCellCol) {
@@ -142,7 +152,7 @@ public class MinesweeperGame {
             case 'h' -> 7;
             case 'i' -> 8;
             case 'j' -> 9;
-            default -> -1;
+            default -> throw new AppException("입력하신 Column, [" + enteredCellCol + "] 값은 잘못된 입력입니다.");
         };
     }
 
