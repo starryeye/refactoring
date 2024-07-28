@@ -24,7 +24,7 @@ public class GameBoard {
             }
         }
 
-        for (int i = 0; i < LAND_MINE_COUNT; i++) {
+        for (int i = 0; i < LAND_MINE_COUNT; i++) { // todo, 지뢰가 동일한 지점에 중복으로 지정될 수 있음
             int landMineCol = new Random().nextInt(colSize);
             int landMineRow = new Random().nextInt(rowSize);
             Cell landMineCell = getCell(landMineRow, landMineCol);
