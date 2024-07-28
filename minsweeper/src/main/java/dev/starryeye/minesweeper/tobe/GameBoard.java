@@ -1,5 +1,9 @@
 package dev.starryeye.minesweeper.tobe;
 
+import dev.starryeye.minesweeper.tobe.cell.Cell;
+import dev.starryeye.minesweeper.tobe.cell.EmptyCell;
+import dev.starryeye.minesweeper.tobe.cell.LandMineCell;
+import dev.starryeye.minesweeper.tobe.cell.NumberCell;
 import dev.starryeye.minesweeper.tobe.gamelevel.GameLevel;
 
 import java.util.Arrays;
@@ -25,15 +29,14 @@ public class GameBoard {
 
         for (int row = 0; row < rowSize; row++) {
             for (int col = 0; col < colSize; col++) {
-                board[row][col] = Cell.create();
+                board[row][col] = new EmptyCell();
             }
         }
 
         for (int i = 0; i < landMineCount; i++) { // todo, 지뢰가 동일한 지점에 중복으로 지정될 수 있음
             int landMineCol = new Random().nextInt(colSize);
             int landMineRow = new Random().nextInt(rowSize);
-            Cell landMineCell = getCell(landMineRow, landMineCol);
-            landMineCell.turnOnLandMine();
+            board[landMineRow][landMineCol] = new LandMineCell();
         }
 
         for (int row = 0; row < rowSize; row++) {
@@ -43,7 +46,10 @@ public class GameBoard {
                     continue;
                 }
                 int count = countNearbyLandMineBasedOn(row, col);
-                getCell(row, col).updateNearbyLandMineCount(count);
+                if (count == 0) {
+                    continue;
+                }
+                board[row][col] = new NumberCell(count);
             }
         }
     }
