@@ -3,19 +3,21 @@ package dev.starryeye.minesweeper.tobe;
 import dev.starryeye.minesweeper.tobe.game.GameInitializer;
 import dev.starryeye.minesweeper.tobe.game.GameRunner;
 import dev.starryeye.minesweeper.tobe.gamelevel.GameLevel;
-import dev.starryeye.minesweeper.tobe.io.ConsoleInputHandler;
-import dev.starryeye.minesweeper.tobe.io.ConsoleOutputHandler;
+import dev.starryeye.minesweeper.tobe.io.InputHandler;
+import dev.starryeye.minesweeper.tobe.io.OutputHandler;
 
 public class Minesweeper implements GameInitializer, GameRunner { // Game 이라는 하나의 인터페이스로 만들 수도 있지만 만약에 initialize 는 필요없는 Game 이 있다 치면 ISP 위반이다.
 
     private final GameBoard gameBoard;
     private final BoardIndexConverter boardIndexConverter = new BoardIndexConverter();
-    private final ConsoleInputHandler consoleInputHandler = new ConsoleInputHandler();
-    private final ConsoleOutputHandler consoleOutputHandler = new ConsoleOutputHandler();
+    private final InputHandler inputHandler;
+    private final OutputHandler outputHandler;
     private int gameStatus = 0; // 0: 게임 중, 1: 승리, -1: 패배
 
-    public Minesweeper(GameLevel gameLevel) {
+    public Minesweeper(GameLevel gameLevel, InputHandler inputHandler, OutputHandler outputHandler) {
         this.gameBoard = new GameBoard(gameLevel);
+        this.inputHandler = inputHandler;
+        this.outputHandler = outputHandler;
     }
 
     @Override
@@ -25,18 +27,18 @@ public class Minesweeper implements GameInitializer, GameRunner { // Game 이라
 
     @Override
     public void run() {
-        consoleOutputHandler.showGameStartComments();
+        outputHandler.showGameStartComments();
 
         while (true) {
             try {
-                consoleOutputHandler.showBoard(gameBoard);
+                outputHandler.showBoard(gameBoard);
 
                 if (doesUserWinTheGame()) {
-                    consoleOutputHandler.printGameWinMessage();
+                    outputHandler.showGameWinMessage();
                     break;
                 }
                 if (doesUserLoseTheGame()) {
-                    consoleOutputHandler.printGameLoseMessage();
+                    outputHandler.showGameLoseMessage();
                     break;
                 }
 
@@ -44,9 +46,9 @@ public class Minesweeper implements GameInitializer, GameRunner { // Game 이라
                 String selectedUserActionInput = getSelectedUserActionFromUser();
                 actOnCell(selectedCellInput, selectedUserActionInput);
             } catch (GameException e) {
-                consoleOutputHandler.printGameExceptionMessage(e); // 개발자가 의도한 예외를 처리한다.
+                outputHandler.showGameExceptionMessage(e); // 개발자가 의도한 예외를 처리한다.
             } catch (Exception e) {
-                consoleOutputHandler.printUnexpectedExceptionMessage(); // 게임을 그대로 진행하는 것이 정책이라 Exception 을 그냥 잡는다. 서버에서는 이렇게 처리하는 것은 안티패턴이며 원래는 던지거나 적절한 처리를 하는게 좋다.
+                outputHandler.showUnexpectedExceptionMessage(); // 게임을 그대로 진행하는 것이 정책이라 Exception 을 그냥 잡는다. 서버에서는 이렇게 처리하는 것은 안티패턴이며 원래는 던지거나 적절한 처리를 하는게 좋다.
             }
         }
     }
@@ -89,13 +91,13 @@ public class Minesweeper implements GameInitializer, GameRunner { // Game 이라
     }
 
     private String getSelectedUserActionFromUser() {
-        consoleOutputHandler.printUserActionPromptForSelectedCell();
-        return consoleInputHandler.getUserInput();
+        outputHandler.showUserActionPromptForSelectedCell();
+        return inputHandler.getUserInput();
     }
 
     private String getSelectedCellFromUser() {
-        consoleOutputHandler.printCellSelectionPrompt();
-        return consoleInputHandler.getUserInput();
+        outputHandler.showCellSelectionPrompt();
+        return inputHandler.getUserInput();
     }
 
     private boolean doesUserLoseTheGame() {

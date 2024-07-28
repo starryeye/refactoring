@@ -6,15 +6,17 @@ import dev.starryeye.minesweeper.tobe.GameException;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class ConsoleOutputHandler {
+public class ConsoleOutputHandler implements OutputHandler{
 
 
+    @Override
     public void showGameStartComments() {
         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         System.out.println("지뢰찾기 게임 시작!");
         System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     }
 
+    @Override
     public void showBoard(GameBoard board) {
 
         String alphabets = generateColAlphabets(board);
@@ -39,27 +41,33 @@ public class ConsoleOutputHandler {
         return String.join(" ", alphabets); // "a b c d ..."
     }
 
-    public void printGameWinMessage() {
+    @Override
+    public void showGameWinMessage() {
         System.out.println("지뢰를 모두 찾았습니다. GAME CLEAR!");
     }
 
-    public void printGameLoseMessage() {
+    @Override
+    public void showGameLoseMessage() {
         System.out.println("지뢰를 밟았습니다. GAME OVER!");
     }
 
-    public void printCellSelectionPrompt() {
+    @Override
+    public void showCellSelectionPrompt() {
         System.out.println("선택할 좌표를 입력하세요. (예: a1)");
     }
 
-    public void printUserActionPromptForSelectedCell() {
+    @Override
+    public void showUserActionPromptForSelectedCell() {
         System.out.println("선택한 셀에 대한 행위를 선택하세요. (1: 오픈, 2: 깃발 꽂기)");
     }
 
-    public void printGameExceptionMessage(GameException e) {
+    @Override
+    public void showGameExceptionMessage(GameException e) {
         System.out.println(e.getMessage());
     }
 
-    public void printUnexpectedExceptionMessage() {
+    @Override
+    public void showUnexpectedExceptionMessage() {
         System.out.println("프로그램에 문제가 생겼습니다.");
     }
 }
