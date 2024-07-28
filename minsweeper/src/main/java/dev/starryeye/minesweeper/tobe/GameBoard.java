@@ -1,15 +1,20 @@
 package dev.starryeye.minesweeper.tobe;
 
+import dev.starryeye.minesweeper.tobe.gamelevel.GameLevel;
+
 import java.util.Arrays;
 import java.util.Random;
 
 public class GameBoard {
 
-    private static final int LAND_MINE_COUNT = 10;
-
+    private final int landMineCount;
     private final Cell[][] board;
 
-    public GameBoard(int rowSize, int colSize) {
+    public GameBoard(GameLevel gameLevel) {
+        int rowSize = gameLevel.getRowSize();
+        int colSize = gameLevel.getColSize();
+
+        this.landMineCount = gameLevel.getLandMineCount();
         this.board = new Cell[rowSize][colSize];
     }
 
@@ -24,7 +29,7 @@ public class GameBoard {
             }
         }
 
-        for (int i = 0; i < LAND_MINE_COUNT; i++) { // todo, 지뢰가 동일한 지점에 중복으로 지정될 수 있음
+        for (int i = 0; i < landMineCount; i++) { // todo, 지뢰가 동일한 지점에 중복으로 지정될 수 있음
             int landMineCol = new Random().nextInt(colSize);
             int landMineRow = new Random().nextInt(rowSize);
             Cell landMineCell = getCell(landMineRow, landMineCol);
