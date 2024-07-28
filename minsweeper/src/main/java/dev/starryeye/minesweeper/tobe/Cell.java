@@ -47,6 +47,10 @@ public class Cell {
         return this.isFlagged || this.isOpened;
     }
 
+    public boolean isFlagged() {
+        return this.isFlagged;
+    }
+
     public boolean isLandMine() {
         return this.isLandMine;
     }

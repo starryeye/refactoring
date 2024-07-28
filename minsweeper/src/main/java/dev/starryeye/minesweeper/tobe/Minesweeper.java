@@ -48,7 +48,7 @@ public class Minesweeper {
 
         if (doesUserSelectMarkingTheFlag(selectedUserActionInput)) {
             gameBoard.flag(selectedRowIndex, selectedColIndex);
-            changeGameStatusToWinIfAllCellIsChecked();
+            changeGameStatusToWinIfGameClearCondition();
             return;
         }
 
@@ -60,7 +60,7 @@ public class Minesweeper {
             }
 
             gameBoard.openSurroundedCells(selectedRowIndex, selectedColIndex);
-            changeGameStatusToWinIfAllCellIsChecked();
+            changeGameStatusToWinIfGameClearCondition();
             return;
         }
         throw new GameException("입력하신 행위, [" + selectedUserActionInput + "] 값은 잘못된 입력입니다.");
@@ -104,10 +104,14 @@ public class Minesweeper {
         return gameStatus == 1;
     }
 
-    private void changeGameStatusToWinIfAllCellIsChecked() { // checkGameClearCondition
-        if (gameBoard.isAllCellChecked()) {
+    private void changeGameStatusToWinIfGameClearCondition() {
+        if (checkGameClearCondition()) {
             changeGameStatusToWin();
         }
+    }
+
+    private boolean checkGameClearCondition() {
+        return gameBoard.isAllCellChecked() && gameBoard.isAllLandMinesFlagged();
     }
 
     private void changeGameStatusToWin() {

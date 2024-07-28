@@ -73,14 +73,14 @@ public class GameBoard {
             return;
         }
 
-        open(row - 1, col - 1);
-        open(row - 1, col);
-        open(row - 1, col + 1);
-        open(row, col - 1);
-        open(row, col + 1);
-        open(row + 1, col - 1);
-        open(row + 1, col);
-        open(row + 1, col + 1);
+        openSurroundedCells(row - 1, col - 1);
+        openSurroundedCells(row - 1, col);
+        openSurroundedCells(row - 1, col + 1);
+        openSurroundedCells(row, col - 1);
+        openSurroundedCells(row, col + 1);
+        openSurroundedCells(row + 1, col - 1);
+        openSurroundedCells(row + 1, col);
+        openSurroundedCells(row + 1, col + 1);
     }
 
     private boolean checkAdjacentLandMine(int row, int col) {
@@ -102,6 +102,13 @@ public class GameBoard {
         return Arrays.stream(board)
                 .flatMap(Arrays::stream)
                 .allMatch(Cell::isChecked); // getter 로 비교하는 것을 참고 객체에게 메시지를 던져서 객체가 스스로 판단하도록 하자
+    }
+
+    public boolean isAllLandMinesFlagged() {
+        return Arrays.stream(board)
+                .flatMap(Arrays::stream)
+                .filter(Cell::isLandMine)
+                .allMatch(Cell::isFlagged);
     }
 
     public int getRowSize() {
