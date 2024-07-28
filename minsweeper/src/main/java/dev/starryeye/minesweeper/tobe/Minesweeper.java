@@ -1,13 +1,12 @@
 package dev.starryeye.minesweeper.tobe;
 
+import dev.starryeye.minesweeper.tobe.game.GameInitializer;
+import dev.starryeye.minesweeper.tobe.game.GameRunner;
 import dev.starryeye.minesweeper.tobe.gamelevel.GameLevel;
 import dev.starryeye.minesweeper.tobe.io.ConsoleInputHandler;
 import dev.starryeye.minesweeper.tobe.io.ConsoleOutputHandler;
 
-public class Minesweeper {
-
-    private static final int BOARD_ROW_SIZE = 8;
-    private static final int BOARD_COL_SIZE = 10;
+public class Minesweeper implements GameInitializer, GameRunner { // Game 이라는 하나의 인터페이스로 만들 수도 있지만 만약에 initialize 는 필요없는 Game 이 있다 치면 ISP 위반이다.
 
     private final GameBoard gameBoard;
     private final BoardIndexConverter boardIndexConverter = new BoardIndexConverter();
@@ -19,9 +18,14 @@ public class Minesweeper {
         this.gameBoard = new GameBoard(gameLevel);
     }
 
+    @Override
+    public void initialize() {
+        gameBoard.initializeGame();
+    }
+
+    @Override
     public void run() {
         consoleOutputHandler.showGameStartComments();
-        gameBoard.initializeGame();
 
         while (true) {
             try {
