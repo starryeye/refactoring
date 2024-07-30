@@ -1,9 +1,6 @@
 package dev.starryeye.minesweeper.tobe;
 
-import dev.starryeye.minesweeper.tobe.cell.Cell;
-import dev.starryeye.minesweeper.tobe.cell.EmptyCell;
-import dev.starryeye.minesweeper.tobe.cell.LandMineCell;
-import dev.starryeye.minesweeper.tobe.cell.NumberCell;
+import dev.starryeye.minesweeper.tobe.cell.*;
 import dev.starryeye.minesweeper.tobe.gamelevel.GameLevel;
 
 import java.util.Arrays;
