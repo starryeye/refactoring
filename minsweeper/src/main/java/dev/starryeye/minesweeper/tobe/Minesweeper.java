@@ -5,11 +5,11 @@ import dev.starryeye.minesweeper.tobe.game.GameRunner;
 import dev.starryeye.minesweeper.tobe.gamelevel.GameLevel;
 import dev.starryeye.minesweeper.tobe.io.InputHandler;
 import dev.starryeye.minesweeper.tobe.io.OutputHandler;
+import dev.starryeye.minesweeper.tobe.position.CellPosition;
 
 public class Minesweeper implements GameInitializer, GameRunner { // Game 이라는 하나의 인터페이스로 만들 수도 있지만 만약에 initialize 는 필요없는 Game 이 있다 치면 ISP 위반이다.
 
     private final GameBoard gameBoard;
-    private final BoardIndexConverter boardIndexConverter = new BoardIndexConverter();
     private final InputHandler inputHandler;
     private final OutputHandler outputHandler;
     private int gameStatus = 0; // 0: 게임 중, 1: 승리, -1: 패배
@@ -42,7 +42,7 @@ public class Minesweeper implements GameInitializer, GameRunner { // Game 이라
                     break;
                 }
 
-                String selectedCellInput = getSelectedCellFromUser();
+                CellPosition selectedCellInput = getSelectedCellFromUser();
                 String selectedUserActionInput = getSelectedUserActionFromUser();
                 actOnCell(selectedCellInput, selectedUserActionInput);
             } catch (GameException e) {
@@ -53,25 +53,22 @@ public class Minesweeper implements GameInitializer, GameRunner { // Game 이라
         }
     }
 
-    private void actOnCell(String selectedCellInput, String selectedUserActionInput) {
-
-        int selectedColIndex = boardIndexConverter.getSelectedColIndexBy(selectedCellInput, gameBoard.getColSize()); // 메서드명에 전치사를 사용함으로써 파라미터와 연결지어 의미를 자연스럽게 전달할 수 있다.
-        int selectedRowIndex = boardIndexConverter.getSelectedRowIndexBy(selectedCellInput, gameBoard.getRowSize());
+    private void actOnCell(CellPosition selectedCellInput, String selectedUserActionInput) {
 
         if (doesUserSelectMarkingTheFlag(selectedUserActionInput)) {
-            gameBoard.flag(selectedRowIndex, selectedColIndex);
+            gameBoard.flagAt(selectedCellInput);
             changeGameStatusToWinIfGameClearCondition();
             return;
         }
 
         if (doesUserSelectOpeningTheCell(selectedUserActionInput)) {
-            if (gameBoard.isLandMineCell(selectedRowIndex, selectedColIndex)) {
-                gameBoard.open(selectedRowIndex, selectedColIndex);
+            if (gameBoard.isLandMineCell(selectedCellInput)) {
+                gameBoard.openAt(selectedCellInput);
                 changeGameStatusToLose();
                 return;
             }
 
-            gameBoard.openSurroundedCells(selectedRowIndex, selectedColIndex);
+            gameBoard.openSurroundedCells(selectedCellInput);
             changeGameStatusToWinIfGameClearCondition();
             return;
         }
@@ -95,9 +92,15 @@ public class Minesweeper implements GameInitializer, GameRunner { // Game 이라
         return inputHandler.getUserInput();
     }
 
-    private String getSelectedCellFromUser() {
+    private CellPosition getSelectedCellFromUser() {
         outputHandler.showCellSelectionPrompt();
-        return inputHandler.getUserInput();
+        CellPosition cellPositionFromUserInput = inputHandler.getCellPositionFromUserInput();
+
+        if (gameBoard.isInvalidCellPosition(cellPositionFromUserInput)) {
+            // 0 보다 작은 값에 대한 유효성 검증은 CellPosition 생성자에서 처리하였다.(index 개념 자체가 0 보다 작을 수 없기 때문..) 하지만, board size 보다 큰 인덱스 검증은 game board 에서 처리하도록 책임을 분리하였다.
+            throw new GameException("잘못된 좌표를 선택하였습니다.");
+        }
+        return cellPositionFromUserInput;
     }
 
     private boolean doesUserLoseTheGame() {

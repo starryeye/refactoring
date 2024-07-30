@@ -2,6 +2,7 @@ package dev.starryeye.minesweeper.tobe.io;
 
 import dev.starryeye.minesweeper.tobe.GameBoard;
 import dev.starryeye.minesweeper.tobe.GameException;
+import dev.starryeye.minesweeper.tobe.position.CellPosition;
 
 import java.util.List;
 import java.util.stream.IntStream;
@@ -25,7 +26,8 @@ public class ConsoleOutputHandler implements OutputHandler{
         for (int row = 0; row < board.getRowSize(); row++) {
             System.out.printf("%2d  ", row + 1);
             for (int col = 0; col < board.getColSize(); col++) {
-                System.out.print(board.getCellSignBy(row, col) + " "); // Cell 에게 Board 를 그려달라는 메시지는 Cell 의 책임 범위를 벗어나기 때문에 getter 를 사용해야한다.
+                CellPosition cellPosition = CellPosition.of(row, col);
+                System.out.print(board.getCellSignBy(cellPosition) + " "); // Cell 에게 Board 를 그려달라는 메시지는 Cell 의 책임 범위를 벗어나기 때문에 getter 를 사용해야한다.
             }
             System.out.println();
         }
