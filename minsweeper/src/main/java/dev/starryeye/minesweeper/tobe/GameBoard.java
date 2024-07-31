@@ -3,12 +3,11 @@ package dev.starryeye.minesweeper.tobe;
 import dev.starryeye.minesweeper.tobe.cell.*;
 import dev.starryeye.minesweeper.tobe.gamelevel.GameLevel;
 import dev.starryeye.minesweeper.tobe.position.CellPosition;
+import dev.starryeye.minesweeper.tobe.position.CellPositions;
 import dev.starryeye.minesweeper.tobe.position.RelativePosition;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
-import java.util.stream.Stream;
 
 public class GameBoard {
 
@@ -25,35 +24,36 @@ public class GameBoard {
 
     public void initializeGame() {
 
-        int rowSize = getRowSize();
-        int colSize = getColSize();
+        // 주의, cellPositions 가 board 를 대채하는 건 아니다. board 는 Cell 을 가지고 있지만, CellPositions 는 CellPosition 들을 가지고 있음
+        CellPositions allCellPositions = CellPositions.from(board);
 
-        for (int row = 0; row < rowSize; row++) {
-            for (int col = 0; col < colSize; col++) {
-                board[row][col] = new EmptyCell();
-            }
-        }
+        initializeEmptyCell(allCellPositions);
 
-        for (int i = 0; i < landMineCount; i++) { // todo, 지뢰가 동일한 지점에 중복으로 지정될 수 있음
-            int landMineCol = new Random().nextInt(colSize);
-            int landMineRow = new Random().nextInt(rowSize);
-            board[landMineRow][landMineCol] = new LandMineCell();
-        }
+        CellPositions landMineCellPositions = allCellPositions.extractRandomCellPositions(landMineCount);
+        initializeLandMineCell(landMineCellPositions);
 
-        for (int row = 0; row < rowSize; row++) {
-            for (int col = 0; col < colSize; col++) {
+        CellPositions numberCellPositionCandidates = allCellPositions.subtract(landMineCellPositions);
+        initializeNumberCell(numberCellPositionCandidates);
+    }
 
-                CellPosition cellPosition = CellPosition.of(row, col);
-                if (isLandMineCell(cellPosition)) {
-                    continue;
-                }
-                int count = countNearbyLandMineBasedOn(cellPosition);
-                if (count == 0) {
-                    continue;
-                }
-                board[row][col] = new NumberCell(count);
-            }
-        }
+    private void initializeEmptyCell(CellPositions emptyCellPositions) {
+        emptyCellPositions.getAll()
+                .forEach(emptyCellPosition -> updateCellAt(emptyCellPosition, new EmptyCell()));
+    }
+
+    private void initializeLandMineCell(CellPositions landMineCellPositions) {
+        landMineCellPositions.getAll()
+                .forEach(landMineCellPosition -> updateCellAt(landMineCellPosition, new LandMineCell()));
+    }
+
+    private void initializeNumberCell(CellPositions numberCellPositionCandidates) {
+        numberCellPositionCandidates.getAll()
+                .forEach(numberCellPositionCandidate -> {
+                    int count = countNearbyLandMineBasedOn(numberCellPositionCandidate);
+                    if (count > 0) {
+                        updateCellAt(numberCellPositionCandidate, new NumberCell(count));
+                    }
+                });
     }
 
     public void flagAt(CellPosition cellPosition) {
@@ -101,12 +101,11 @@ public class GameBoard {
     }
 
     public boolean isAllCellChecked() {
-        return Arrays.stream(board)
-                .flatMap(Arrays::stream)
-                .allMatch(Cell::isChecked); // getter 로 비교하는 것을 참고 객체에게 메시지를 던져서 객체가 스스로 판단하도록 하자
+        Cells cells = Cells.from(board);
+        return cells.isAllChecked();
     }
 
-    public boolean isAllLandMinesFlagged() {
+    public boolean isAllLandMinesFlagged() { // todo, Cells 사용
         return Arrays.stream(board)
                 .flatMap(Arrays::stream)
                 .filter(Cell::isLandMine)
@@ -160,4 +159,9 @@ public class GameBoard {
                 .filter(this::isValidCellPosition)
                 .toList();
     }
+
+    private void updateCellAt(CellPosition cellPosition, Cell cell) {
+        board[cellPosition.getRowIndex()][cellPosition.getColIndex()] = cell;
+    }
+
 }
