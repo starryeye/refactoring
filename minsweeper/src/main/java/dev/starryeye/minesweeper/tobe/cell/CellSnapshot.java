@@ -40,6 +40,10 @@ public class CellSnapshot {
         return of(CellSnapshotStatus.LAND_MINE, 0);
     }
 
+    public boolean isSameStatus(CellSnapshotStatus cellSnapshotStatus) {
+        return this.status == cellSnapshotStatus;
+    }
+
     public CellSnapshotStatus getStatus() {
         return status;
     }

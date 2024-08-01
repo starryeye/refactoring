@@ -4,12 +4,15 @@ import dev.starryeye.minesweeper.tobe.GameBoard;
 import dev.starryeye.minesweeper.tobe.GameException;
 import dev.starryeye.minesweeper.tobe.cell.CellSnapshot;
 import dev.starryeye.minesweeper.tobe.cell.CellSnapshotStatus;
+import dev.starryeye.minesweeper.tobe.io.sign.*;
 import dev.starryeye.minesweeper.tobe.position.CellPosition;
 
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class ConsoleOutputHandler implements OutputHandler{
+public class ConsoleOutputHandler implements OutputHandler {
+
+    private final CellSignTemplate cellSignTemplate = new CellSignTemplate();
 
     @Override
     public void showGameStartComments() {
@@ -30,7 +33,10 @@ public class ConsoleOutputHandler implements OutputHandler{
                 CellPosition cellPosition = CellPosition.of(row, col);
 
                 CellSnapshot cellSnapshot = board.getCellSnapshotBy(cellPosition);
-                String cellSign = decideCellSignBasedOn(cellSnapshot);
+                /**
+                 * Custom 1 : String cellSign = decideCellSignBasedOn(cellSnapshot);
+                 */
+                String cellSign = cellSignTemplate.findCellSignBy(cellSnapshot); // template callback (현재 default callback 사용)
 
                 System.out.print(cellSign + " ");
             }
