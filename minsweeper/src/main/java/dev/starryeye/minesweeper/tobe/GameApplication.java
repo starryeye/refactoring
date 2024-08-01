@@ -1,23 +1,23 @@
 package dev.starryeye.minesweeper.tobe;
 
+import dev.starryeye.minesweeper.tobe.config.GameConfig;
 import dev.starryeye.minesweeper.tobe.gamelevel.Advanced;
 import dev.starryeye.minesweeper.tobe.gamelevel.Beginner;
-import dev.starryeye.minesweeper.tobe.gamelevel.GameLevel;
 import dev.starryeye.minesweeper.tobe.gamelevel.VeryBeginner;
 import dev.starryeye.minesweeper.tobe.io.ConsoleInputHandler;
 import dev.starryeye.minesweeper.tobe.io.ConsoleOutputHandler;
-import dev.starryeye.minesweeper.tobe.io.InputHandler;
-import dev.starryeye.minesweeper.tobe.io.OutputHandler;
 
 public class GameApplication {
 
     public static void main(String[] args) {
 
-        GameLevel gameLevel = new Beginner();
-        InputHandler inputHandler = new ConsoleInputHandler();
-        OutputHandler outputHandler = new ConsoleOutputHandler();
+        GameConfig gameConfig = GameConfig.of(
+                new Beginner(),
+                new ConsoleInputHandler(),
+                new ConsoleOutputHandler()
+        );
 
-        Minesweeper minesweeper = new Minesweeper(gameLevel, inputHandler, outputHandler);
+        Minesweeper minesweeper = new Minesweeper(gameConfig);
         minesweeper.initialize();
         minesweeper.run();
     }
