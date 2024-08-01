@@ -134,9 +134,9 @@ public class GameBoard {
         return board[0].length;
     }
 
-    public String getCellSignBy(CellPosition cellPosition) {
+    public CellSnapshot getCellSnapshotBy(CellPosition cellPosition) {
         Cell cell = getCell(cellPosition);
-        return cell.getSign();
+        return cell.getSnapshot();
     }
 
     private Cell getCell(CellPosition cellPosition) {
@@ -163,5 +163,4 @@ public class GameBoard {
     private void updateCellAt(CellPosition cellPosition, Cell cell) {
         board[cellPosition.getRowIndex()][cellPosition.getColIndex()] = cell;
     }
-
 }

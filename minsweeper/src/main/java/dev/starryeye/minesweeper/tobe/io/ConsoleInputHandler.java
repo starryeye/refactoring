@@ -2,6 +2,7 @@ package dev.starryeye.minesweeper.tobe.io;
 
 import dev.starryeye.minesweeper.tobe.BoardIndexConverter;
 import dev.starryeye.minesweeper.tobe.position.CellPosition;
+import dev.starryeye.minesweeper.user.UserAction;
 
 import java.util.Scanner;
 
@@ -14,6 +15,21 @@ public class ConsoleInputHandler implements InputHandler{
     @Override
     public String getUserInput() {
         return SCANNER.nextLine();
+    }
+
+    @Override
+    public UserAction getUserActionFromUserInput() {
+
+        String userInput = SCANNER.nextLine();
+
+        if ("1".equals(userInput)) { // NPE 방지를 위해 상수의 equals 를 사용
+            return UserAction.OPEN;
+        }
+        if ("2".equals(userInput)) {
+            return UserAction.FLAG;
+        }
+
+        return UserAction.UNKNOWN;
     }
 
     @Override

@@ -2,13 +2,14 @@ package dev.starryeye.minesweeper.tobe.io;
 
 import dev.starryeye.minesweeper.tobe.GameBoard;
 import dev.starryeye.minesweeper.tobe.GameException;
+import dev.starryeye.minesweeper.tobe.cell.CellSnapshot;
+import dev.starryeye.minesweeper.tobe.cell.CellSnapshotStatus;
 import dev.starryeye.minesweeper.tobe.position.CellPosition;
 
 import java.util.List;
 import java.util.stream.IntStream;
 
 public class ConsoleOutputHandler implements OutputHandler{
-
 
     @Override
     public void showGameStartComments() {
@@ -27,11 +28,28 @@ public class ConsoleOutputHandler implements OutputHandler{
             System.out.printf("%2d  ", row + 1);
             for (int col = 0; col < board.getColSize(); col++) {
                 CellPosition cellPosition = CellPosition.of(row, col);
-                System.out.print(board.getCellSignBy(cellPosition) + " "); // Cell 에게 Board 를 그려달라는 메시지는 Cell 의 책임 범위를 벗어나기 때문에 getter 를 사용해야한다.
+
+                CellSnapshot cellSnapshot = board.getCellSnapshotBy(cellPosition);
+                String cellSign = decideCellSignBasedOn(cellSnapshot);
+
+                System.out.print(cellSign + " ");
             }
             System.out.println();
         }
         System.out.println();
+    }
+
+    private String decideCellSignBasedOn(CellSnapshot cellSnapshot) {
+
+        CellSnapshotStatus status = cellSnapshot.getStatus();
+
+        return switch (status) {
+            case UNCHECKED -> ConsoleCellSign.UNCHECKED.sign();
+            case EMPTY -> ConsoleCellSign.EMPTY.sign();
+            case FLAG -> ConsoleCellSign.FLAG.sign();
+            case NUMBER -> ConsoleCellSign.NUMBER.sign(cellSnapshot.getNearbyLandMineCount());
+            case LAND_MINE -> ConsoleCellSign.LAND_MINE.sign();
+        };
     }
 
     private static String generateColAlphabets(GameBoard board) {

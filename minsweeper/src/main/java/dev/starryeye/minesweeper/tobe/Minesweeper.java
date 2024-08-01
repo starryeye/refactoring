@@ -6,6 +6,7 @@ import dev.starryeye.minesweeper.tobe.gamelevel.GameLevel;
 import dev.starryeye.minesweeper.tobe.io.InputHandler;
 import dev.starryeye.minesweeper.tobe.io.OutputHandler;
 import dev.starryeye.minesweeper.tobe.position.CellPosition;
+import dev.starryeye.minesweeper.user.UserAction;
 
 public class Minesweeper implements GameInitializer, GameRunner { // Game 이라는 하나의 인터페이스로 만들 수도 있지만 만약에 initialize 는 필요없는 Game 이 있다 치면 ISP 위반이다.
 
@@ -43,7 +44,7 @@ public class Minesweeper implements GameInitializer, GameRunner { // Game 이라
                 }
 
                 CellPosition selectedCellInput = getSelectedCellFromUser();
-                String selectedUserActionInput = getSelectedUserActionFromUser();
+                UserAction selectedUserActionInput = getSelectedUserActionFromUser();
                 actOnCell(selectedCellInput, selectedUserActionInput);
             } catch (GameException e) {
                 outputHandler.showGameExceptionMessage(e); // 개발자가 의도한 예외를 처리한다.
@@ -53,7 +54,7 @@ public class Minesweeper implements GameInitializer, GameRunner { // Game 이라
         }
     }
 
-    private void actOnCell(CellPosition selectedCellInput, String selectedUserActionInput) {
+    private void actOnCell(CellPosition selectedCellInput, UserAction selectedUserActionInput) {
 
         if (doesUserSelectMarkingTheFlag(selectedUserActionInput)) {
             gameBoard.flagAt(selectedCellInput);
@@ -79,17 +80,17 @@ public class Minesweeper implements GameInitializer, GameRunner { // Game 이라
         gameStatus = -1;
     }
 
-    private boolean doesUserSelectOpeningTheCell(String selectedUserActionInput) {
-        return selectedUserActionInput.equals("1");
+    private boolean doesUserSelectOpeningTheCell(UserAction selectedUserActionInput) {
+        return UserAction.OPEN == selectedUserActionInput;
     }
 
-    private boolean doesUserSelectMarkingTheFlag(String selectedUserActionInput) {
-        return selectedUserActionInput.equals("2");
+    private boolean doesUserSelectMarkingTheFlag(UserAction selectedUserActionInput) {
+        return UserAction.FLAG == selectedUserActionInput;
     }
 
-    private String getSelectedUserActionFromUser() {
+    private UserAction getSelectedUserActionFromUser() {
         outputHandler.showUserActionPromptForSelectedCell();
-        return inputHandler.getUserInput();
+        return inputHandler.getUserActionFromUserInput();
     }
 
     private CellPosition getSelectedCellFromUser() {
