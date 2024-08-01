@@ -34,9 +34,12 @@ public class ConsoleOutputHandler implements OutputHandler {
 
                 CellSnapshot cellSnapshot = board.getCellSnapshotBy(cellPosition);
                 /**
-                 * Custom 1 : String cellSign = decideCellSignBasedOn(cellSnapshot);
+                 * 단순 Enum 사용한 방법, 클래스 관점에서 OCP 만족 못함
+                 *      String cellSign = decideCellSignBasedOn(cellSnapshot);
+                 * template callback pattern(현재 default callback 사용) 사용한 방법, 클래스 관점에서 OCP 만족
+                 *      String cellSign = cellSignTemplate.findCellSignBy(cellSnapshot);
                  */
-                String cellSign = cellSignTemplate.findCellSignBy(cellSnapshot); // template callback (현재 default callback 사용)
+                String cellSign = CellSignFinder.findCellSignBy(cellSnapshot); // 위 두가지 방법을 섞은 중간 단계, 클래스 관점에서 OCP 만족 못함
 
                 System.out.print(cellSign + " ");
             }
