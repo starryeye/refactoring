@@ -3,7 +3,6 @@ package dev.starryeye.minesweeper.tobe;
 import dev.starryeye.minesweeper.tobe.config.GameConfig;
 import dev.starryeye.minesweeper.tobe.game.GameInitializer;
 import dev.starryeye.minesweeper.tobe.game.GameRunner;
-import dev.starryeye.minesweeper.tobe.gamelevel.GameLevel;
 import dev.starryeye.minesweeper.tobe.io.InputHandler;
 import dev.starryeye.minesweeper.tobe.io.OutputHandler;
 import dev.starryeye.minesweeper.tobe.position.CellPosition;
@@ -14,41 +13,28 @@ public class Minesweeper implements GameInitializer, GameRunner { // Game 이라
     private final GameBoard gameBoard;
     private final InputHandler inputHandler;
     private final OutputHandler outputHandler;
-    private int gameStatus = 0; // 0: 게임 중, 1: 승리, -1: 패배
-
-    public Minesweeper(GameLevel gameLevel, InputHandler inputHandler, OutputHandler outputHandler) {
-        this.gameBoard = new GameBoard(gameLevel);
-        this.inputHandler = inputHandler;
-        this.outputHandler = outputHandler;
-    }
+    private GameStatus gameStatus;
 
     public Minesweeper(GameConfig gameConfig) {
         this.gameBoard = new GameBoard(gameConfig.getGameLevel());
         this.inputHandler = gameConfig.getInputHandler();
         this.outputHandler = gameConfig.getOutputHandler();
+        this.gameStatus = GameStatus.IN_PROGRESS;
     }
 
     @Override
     public void initialize() {
         gameBoard.initializeGame();
+        this.gameStatus = GameStatus.IN_PROGRESS;
     }
 
     @Override
     public void run() {
         outputHandler.showGameStartComments();
 
-        while (true) {
+        while (gameStatus == GameStatus.IN_PROGRESS) {
             try {
                 outputHandler.showBoard(gameBoard);
-
-                if (doesUserWinTheGame()) {
-                    outputHandler.showGameWinMessage();
-                    break;
-                }
-                if (doesUserLoseTheGame()) {
-                    outputHandler.showGameLoseMessage();
-                    break;
-                }
 
                 CellPosition selectedCellInput = getSelectedCellFromUser();
                 UserAction selectedUserActionInput = getSelectedUserActionFromUser();
@@ -58,6 +44,15 @@ public class Minesweeper implements GameInitializer, GameRunner { // Game 이라
             } catch (Exception e) {
                 outputHandler.showUnexpectedExceptionMessage(); // 게임을 그대로 진행하는 것이 정책이라 Exception 을 그냥 잡는다. 서버에서는 이렇게 처리하는 것은 안티패턴이며 원래는 던지거나 적절한 처리를 하는게 좋다.
             }
+        }
+
+        outputHandler.showBoard(gameBoard);
+
+        if (doesUserWinTheGame()) {
+            outputHandler.showGameWinMessage();
+        }
+        if (doesUserLoseTheGame()) {
+            outputHandler.showGameLoseMessage();
         }
     }
 
@@ -81,10 +76,6 @@ public class Minesweeper implements GameInitializer, GameRunner { // Game 이라
             return;
         }
         throw new GameException("입력하신 행위, [" + selectedUserActionInput + "] 값은 잘못된 입력입니다.");
-    }
-
-    private void changeGameStatusToLose() {
-        gameStatus = -1;
     }
 
     private boolean doesUserSelectOpeningTheCell(UserAction selectedUserActionInput) {
@@ -112,11 +103,11 @@ public class Minesweeper implements GameInitializer, GameRunner { // Game 이라
     }
 
     private boolean doesUserLoseTheGame() {
-        return gameStatus == -1;
+        return gameStatus == GameStatus.LOSE;
     }
 
     private boolean doesUserWinTheGame() {
-        return gameStatus == 1;
+        return gameStatus == GameStatus.WIN;
     }
 
     private void changeGameStatusToWinIfGameClearCondition() {
@@ -130,6 +121,10 @@ public class Minesweeper implements GameInitializer, GameRunner { // Game 이라
     }
 
     private void changeGameStatusToWin() {
-        gameStatus = 1;
+        gameStatus = GameStatus.WIN;
+    }
+
+    private void changeGameStatusToLose() {
+        gameStatus = GameStatus.LOSE;
     }
 }
