@@ -7,6 +7,7 @@ import dev.starryeye.minesweeper.tobe.minesweeper.board.position.RelativePositio
 import dev.starryeye.minesweeper.tobe.minesweeper.board.cell.*;
 
 import java.util.List;
+import java.util.Stack;
 
 public class GameBoard {
 
@@ -54,7 +55,7 @@ public class GameBoard {
             return;
         }
 
-        openSurroundedCells(selectedCellInput);
+        openSurroundedCells2(selectedCellInput); // openSurroundedCells(selectedCellInput);
         changeGameStatusToWinIfGameClearCondition();
     }
 
@@ -128,6 +129,10 @@ public class GameBoard {
 
     private void openSurroundedCells(CellPosition cellPosition) {
 
+        /**
+         * 재귀 함수 버전의 DFS, board 크기가 크면 stack over flow 가 발생할 수 있다.
+         */
+
         if (isOpenedCell(cellPosition)) {
             return;
         }
@@ -143,6 +148,37 @@ public class GameBoard {
 
         List<CellPosition> surroundedPositions = getSurroundedPositions(cellPosition);
         surroundedPositions.forEach(this::openSurroundedCells);
+    }
+
+    private void openSurroundedCells2(CellPosition cellPosition) {
+
+        /**
+         * Stack 자료구조를 이용한 DFS
+         */
+
+        Stack<CellPosition> stack = new Stack<>();
+
+        stack.push(cellPosition);
+
+        while (!stack.isEmpty()) {
+
+            CellPosition currentCellPosition = stack.pop();
+            if (isOpenedCell(currentCellPosition)) {
+                continue;
+            }
+            if (isLandMineCell(currentCellPosition)) {
+                continue;
+            }
+
+            openAt(currentCellPosition);
+
+            if (checkAdjacentLandMine(currentCellPosition)) {
+                continue;
+            }
+
+            List<CellPosition> surroundedPositions = getSurroundedPositions(currentCellPosition);
+            surroundedPositions.forEach(stack::push);
+        }
     }
 
     private void openAt(CellPosition cellPosition) {
