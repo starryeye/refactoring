@@ -1,7 +1,6 @@
 package dev.starryeye.minesweeper.tobe.minesweeper;
 
 import dev.starryeye.minesweeper.tobe.minesweeper.board.GameBoard;
-import dev.starryeye.minesweeper.tobe.minesweeper.board.GameStatus;
 import dev.starryeye.minesweeper.tobe.minesweeper.config.GameConfig;
 import dev.starryeye.minesweeper.tobe.minesweeper.exception.GameException;
 import dev.starryeye.minesweeper.tobe.game.GameInitializer;
@@ -16,7 +15,6 @@ public class Minesweeper implements GameInitializer, GameRunner { // Game 이라
     private final GameBoard gameBoard;
     private final InputHandler inputHandler;
     private final OutputHandler outputHandler;
-    private GameStatus gameStatus;
 
     public Minesweeper(GameConfig gameConfig) {
         this.gameBoard = new GameBoard(gameConfig.getGameLevel());

@@ -3,6 +3,7 @@ package dev.starryeye.minesweeper.tobe;
 import dev.starryeye.minesweeper.tobe.minesweeper.Minesweeper;
 import dev.starryeye.minesweeper.tobe.minesweeper.config.GameConfig;
 import dev.starryeye.minesweeper.tobe.minesweeper.gamelevel.Beginner;
+import dev.starryeye.minesweeper.tobe.minesweeper.gamelevel.VeryBeginner;
 import dev.starryeye.minesweeper.tobe.minesweeper.io.ConsoleInputHandler;
 import dev.starryeye.minesweeper.tobe.minesweeper.io.ConsoleOutputHandler;
 
@@ -11,7 +12,7 @@ public class GameApplication {
     public static void main(String[] args) {
 
         GameConfig gameConfig = GameConfig.of(
-                new Beginner(),
+                new VeryBeginner(),
                 new ConsoleInputHandler(),
                 new ConsoleOutputHandler()
         );

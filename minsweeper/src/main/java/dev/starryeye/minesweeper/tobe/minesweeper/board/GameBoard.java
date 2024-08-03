@@ -6,7 +6,6 @@ import dev.starryeye.minesweeper.tobe.minesweeper.board.position.CellPositions;
 import dev.starryeye.minesweeper.tobe.minesweeper.board.position.RelativePosition;
 import dev.starryeye.minesweeper.tobe.minesweeper.board.cell.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class GameBoard {
@@ -187,7 +186,7 @@ public class GameBoard {
     }
 
     private boolean checkGameClearCondition() {
-        return isAllCellChecked() && isAllLandMinesFlagged();
+        return isAllCellChecked();
     }
 
     private void changeGameStatusToWin() {
@@ -206,13 +205,6 @@ public class GameBoard {
     private boolean isAllCellChecked() {
         Cells cells = Cells.from(board);
         return cells.isAllChecked();
-    }
-
-    private boolean isAllLandMinesFlagged() { // todo, Cells 사용
-        return Arrays.stream(board)
-                .flatMap(Arrays::stream)
-                .filter(Cell::isLandMine)
-                .allMatch(Cell::isFlagged);
     }
 
     private Cell getCell(CellPosition cellPosition) {
