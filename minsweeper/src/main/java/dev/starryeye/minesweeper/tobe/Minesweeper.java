@@ -54,6 +54,22 @@ public class Minesweeper implements GameInitializer, GameRunner { // Game 이라
         }
     }
 
+    private CellPosition getSelectedCellFromUser() {
+        outputHandler.showCellSelectionPrompt();
+        CellPosition cellPositionFromUserInput = inputHandler.getCellPositionFromUserInput();
+
+        if (gameBoard.isInvalidCellPosition(cellPositionFromUserInput)) {
+            // 0 보다 작은 값에 대한 유효성 검증은 CellPosition 생성자에서 처리하였다.(index 개념 자체가 0 보다 작을 수 없기 때문..) 하지만, board size 보다 큰 인덱스 검증은 game board 에서 처리하도록 책임을 분리하였다.
+            throw new GameException("잘못된 좌표를 선택하였습니다.");
+        }
+        return cellPositionFromUserInput;
+    }
+
+    private UserAction getSelectedUserActionFromUser() {
+        outputHandler.showUserActionPromptForSelectedCell();
+        return inputHandler.getUserActionFromUserInput();
+    }
+
     private void actOnCell(CellPosition selectedCellInput, UserAction selectedUserActionInput) {
 
         if (doesUserSelectMarkingTheFlag(selectedUserActionInput)) {
@@ -68,27 +84,11 @@ public class Minesweeper implements GameInitializer, GameRunner { // Game 이라
         throw new GameException("입력하신 행위, [" + selectedUserActionInput + "] 값은 잘못된 입력입니다.");
     }
 
-    private boolean doesUserSelectOpeningTheCell(UserAction selectedUserActionInput) {
-        return UserAction.OPEN == selectedUserActionInput;
-    }
-
     private boolean doesUserSelectMarkingTheFlag(UserAction selectedUserActionInput) {
         return UserAction.FLAG == selectedUserActionInput;
     }
 
-    private UserAction getSelectedUserActionFromUser() {
-        outputHandler.showUserActionPromptForSelectedCell();
-        return inputHandler.getUserActionFromUserInput();
-    }
-
-    private CellPosition getSelectedCellFromUser() {
-        outputHandler.showCellSelectionPrompt();
-        CellPosition cellPositionFromUserInput = inputHandler.getCellPositionFromUserInput();
-
-        if (gameBoard.isInvalidCellPosition(cellPositionFromUserInput)) {
-            // 0 보다 작은 값에 대한 유효성 검증은 CellPosition 생성자에서 처리하였다.(index 개념 자체가 0 보다 작을 수 없기 때문..) 하지만, board size 보다 큰 인덱스 검증은 game board 에서 처리하도록 책임을 분리하였다.
-            throw new GameException("잘못된 좌표를 선택하였습니다.");
-        }
-        return cellPositionFromUserInput;
+    private boolean doesUserSelectOpeningTheCell(UserAction selectedUserActionInput) {
+        return UserAction.OPEN == selectedUserActionInput;
     }
 }
