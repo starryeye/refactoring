@@ -2,7 +2,6 @@ package dev.starryeye.minesweeper.tobe;
 
 import dev.starryeye.minesweeper.tobe.minesweeper.Minesweeper;
 import dev.starryeye.minesweeper.tobe.minesweeper.config.GameConfig;
-import dev.starryeye.minesweeper.tobe.minesweeper.gamelevel.Beginner;
 import dev.starryeye.minesweeper.tobe.minesweeper.gamelevel.VeryBeginner;
 import dev.starryeye.minesweeper.tobe.minesweeper.io.ConsoleInputHandler;
 import dev.starryeye.minesweeper.tobe.minesweeper.io.ConsoleOutputHandler;

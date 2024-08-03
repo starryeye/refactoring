@@ -1,13 +1,13 @@
 package dev.starryeye.minesweeper.tobe.minesweeper;
 
-import dev.starryeye.minesweeper.tobe.minesweeper.board.GameBoard;
-import dev.starryeye.minesweeper.tobe.minesweeper.config.GameConfig;
-import dev.starryeye.minesweeper.tobe.minesweeper.exception.GameException;
 import dev.starryeye.minesweeper.tobe.game.GameInitializer;
 import dev.starryeye.minesweeper.tobe.game.GameRunner;
+import dev.starryeye.minesweeper.tobe.minesweeper.board.GameBoard;
+import dev.starryeye.minesweeper.tobe.minesweeper.board.position.CellPosition;
+import dev.starryeye.minesweeper.tobe.minesweeper.config.GameConfig;
+import dev.starryeye.minesweeper.tobe.minesweeper.exception.GameException;
 import dev.starryeye.minesweeper.tobe.minesweeper.io.InputHandler;
 import dev.starryeye.minesweeper.tobe.minesweeper.io.OutputHandler;
-import dev.starryeye.minesweeper.tobe.minesweeper.board.position.CellPosition;
 import dev.starryeye.minesweeper.tobe.minesweeper.user.UserAction;
 
 public class Minesweeper implements GameInitializer, GameRunner { // Game 이라는 하나의 인터페이스로 만들 수도 있지만 만약에 initialize 는 필요없는 Game 이 있다 치면 ISP 위반이다.

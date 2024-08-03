@@ -1,10 +1,10 @@
 package dev.starryeye.minesweeper.tobe.minesweeper.io;
 
 import dev.starryeye.minesweeper.tobe.minesweeper.board.GameBoard;
-import dev.starryeye.minesweeper.tobe.minesweeper.exception.GameException;
 import dev.starryeye.minesweeper.tobe.minesweeper.board.cell.CellSnapshot;
 import dev.starryeye.minesweeper.tobe.minesweeper.board.cell.CellSnapshotStatus;
 import dev.starryeye.minesweeper.tobe.minesweeper.board.position.CellPosition;
+import dev.starryeye.minesweeper.tobe.minesweeper.exception.GameException;
 import dev.starryeye.minesweeper.tobe.minesweeper.io.sign.CellSignFinder;
 import dev.starryeye.minesweeper.tobe.minesweeper.io.sign.CellSignTemplate;
 

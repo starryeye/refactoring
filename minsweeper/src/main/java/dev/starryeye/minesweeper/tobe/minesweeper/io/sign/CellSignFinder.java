@@ -36,6 +36,7 @@ public enum CellSignFinder implements CellSignProvider {
         }
     },
     NUMBER(CellSnapshotStatus.NUMBER) { // 인터페이스로 추상화 하고 인터페이스를 여기에서 구현함으로써 if 문을 제거할 수 있었다. (ConsoleCellSign 의 sign(int) 와 비교
+
         @Override
         public String provideBy(CellSnapshot cellSnapshot) {
             return String.valueOf(cellSnapshot.getNearbyLandMineCount());

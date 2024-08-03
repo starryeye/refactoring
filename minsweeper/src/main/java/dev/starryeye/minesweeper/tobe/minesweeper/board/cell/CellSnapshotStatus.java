@@ -6,7 +6,7 @@ public enum CellSnapshotStatus {
     EMPTY("빈 셀"),
     NUMBER("숫자 셀"),
     FLAG("깃발 셀"),
-    LAND_MINE("지뢰 셀")
+    LAND_MINE("지뢰 셀"),
     ;
 
     private final String description;

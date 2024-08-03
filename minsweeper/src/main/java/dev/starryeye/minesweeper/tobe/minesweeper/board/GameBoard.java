@@ -1,13 +1,14 @@
 package dev.starryeye.minesweeper.tobe.minesweeper.board;
 
-import dev.starryeye.minesweeper.tobe.minesweeper.gamelevel.GameLevel;
+import dev.starryeye.minesweeper.tobe.minesweeper.board.cell.*;
 import dev.starryeye.minesweeper.tobe.minesweeper.board.position.CellPosition;
 import dev.starryeye.minesweeper.tobe.minesweeper.board.position.CellPositions;
 import dev.starryeye.minesweeper.tobe.minesweeper.board.position.RelativePosition;
-import dev.starryeye.minesweeper.tobe.minesweeper.board.cell.*;
+import dev.starryeye.minesweeper.tobe.minesweeper.gamelevel.GameLevel;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.List;
-import java.util.Stack;
 
 public class GameBoard {
 
@@ -156,13 +157,13 @@ public class GameBoard {
          * Stack 자료구조를 이용한 DFS
          */
 
-        Stack<CellPosition> stack = new Stack<>();
+        Deque<CellPosition> deque = new ArrayDeque<>();
 
-        stack.push(cellPosition);
+        deque.push(cellPosition);
 
-        while (!stack.isEmpty()) {
+        while (!deque.isEmpty()) {
 
-            CellPosition currentCellPosition = stack.pop();
+            CellPosition currentCellPosition = deque.pop();
             if (isOpenedCell(currentCellPosition)) {
                 continue;
             }
@@ -177,7 +178,7 @@ public class GameBoard {
             }
 
             List<CellPosition> surroundedPositions = getSurroundedPositions(currentCellPosition);
-            surroundedPositions.forEach(stack::push);
+            surroundedPositions.forEach(deque::push);
         }
     }
 
