@@ -1,11 +1,10 @@
 package dev.starryeye.minesweeper.tobe;
 
-import dev.starryeye.minesweeper.tobe.config.GameConfig;
-import dev.starryeye.minesweeper.tobe.gamelevel.Advanced;
-import dev.starryeye.minesweeper.tobe.gamelevel.Beginner;
-import dev.starryeye.minesweeper.tobe.gamelevel.VeryBeginner;
-import dev.starryeye.minesweeper.tobe.io.ConsoleInputHandler;
-import dev.starryeye.minesweeper.tobe.io.ConsoleOutputHandler;
+import dev.starryeye.minesweeper.tobe.minesweeper.Minesweeper;
+import dev.starryeye.minesweeper.tobe.minesweeper.config.GameConfig;
+import dev.starryeye.minesweeper.tobe.minesweeper.gamelevel.Beginner;
+import dev.starryeye.minesweeper.tobe.minesweeper.io.ConsoleInputHandler;
+import dev.starryeye.minesweeper.tobe.minesweeper.io.ConsoleOutputHandler;
 
 public class GameApplication {
 
