@@ -12,4 +12,8 @@ public enum StudyCafePassType {
         this.description = description;
     }
 
+    public boolean isNotFixed() {
+        return this != FIXED;
+    }
+
 }

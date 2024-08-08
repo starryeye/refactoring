@@ -30,27 +30,26 @@ public class StudyCafePassMachine {
 
             StudyCafePass selectedPass = inputHandler.getSelectPass(selectedPasses);
 
-            if (selectedPassType == StudyCafePassType.HOURLY || selectedPassType == StudyCafePassType.WEEKLY) {
-
+            if (selectedPassType.isNotFixed()) {
                 outputHandler.showPassOrderSummary(selectedPass);
-            } else if (selectedPassType == StudyCafePassType.FIXED) {
-
-                Optional<StudyCafeLockerPass> lockerPass = getLockerPass(selectedPass);
-
-                if (lockerPass.isEmpty()) {
-                    outputHandler.showPassOrderSummary(selectedPass);
-                    return;
-                }
-
-                outputHandler.askLockerPass(lockerPass.get());
-                boolean lockerSelection = inputHandler.getLockerSelection();
-
-                if (lockerSelection) {
-                    outputHandler.showPassOrderSummaryWithLockerPass(selectedPass, lockerPass.get());
-                } else {
-                    outputHandler.showPassOrderSummary(selectedPass);
-                }
+                return;
             }
+
+            Optional<StudyCafeLockerPass> lockerPass = getLockerPass(selectedPass);
+
+            if (lockerPass.isEmpty()) {
+                outputHandler.showPassOrderSummary(selectedPass);
+                return;
+            }
+
+            outputHandler.askLockerPass(lockerPass.get());
+            if (inputHandler.getLockerSelection() == false) {
+                outputHandler.showPassOrderSummary(selectedPass);
+                return;
+            }
+
+            outputHandler.showPassOrderSummaryWithLockerPass(selectedPass, lockerPass.get());
+
         } catch (AppException e) {
             outputHandler.showSimpleMessage(e.getMessage());
         } catch (Exception e) {
