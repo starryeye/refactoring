@@ -3,6 +3,7 @@ package dev.starryeye.studycafe.tobe.io;
 import dev.starryeye.studycafe.tobe.model.StudyCafeLockerPass;
 import dev.starryeye.studycafe.tobe.model.StudyCafePass;
 import dev.starryeye.studycafe.tobe.model.StudyCafePassType;
+import dev.starryeye.studycafe.tobe.model.StudyCafePasses;
 
 import java.util.List;
 
@@ -41,9 +42,10 @@ public class StudyCafeIOHandler {
         return inputHandler.getPassTypeSelectingUserAction();
     }
 
-    public StudyCafePass askUserPassBy(List<StudyCafePass> passCandidates) {
-        outputHandler.showPassListForSelection(passCandidates);
-        return inputHandler.getSelectPass(passCandidates);
+    public StudyCafePass askUserPassBy(StudyCafePasses passCandidates) {
+        List<StudyCafePass> passCandidateList = passCandidates.getPasses();
+        outputHandler.showPassListForSelection(passCandidateList);
+        return inputHandler.getSelectPass(passCandidateList);
     }
 
     public boolean askUserLockerPassBy(StudyCafeLockerPass lockerPassCandidate) {

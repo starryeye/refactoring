@@ -3,11 +3,8 @@ package dev.starryeye.studycafe.tobe;
 import dev.starryeye.studycafe.tobe.exception.AppException;
 import dev.starryeye.studycafe.tobe.io.StudyCafeFileHandler;
 import dev.starryeye.studycafe.tobe.io.StudyCafeIOHandler;
-import dev.starryeye.studycafe.tobe.model.StudyCafeLockerPass;
-import dev.starryeye.studycafe.tobe.model.StudyCafePass;
-import dev.starryeye.studycafe.tobe.model.StudyCafePassType;
+import dev.starryeye.studycafe.tobe.model.*;
 
-import java.util.List;
 import java.util.Optional;
 
 public class StudyCafePassMachine {
@@ -38,16 +35,14 @@ public class StudyCafePassMachine {
     private StudyCafePass selectPass() {
         StudyCafePassType passType = ioHandler.askUserPassType();
 
-        List<StudyCafePass> passCandidates = findPassCandidatesBy(passType);
+        StudyCafePasses passCandidates = findPassCandidatesBy(passType);
 
         return ioHandler.askUserPassBy(passCandidates);
     }
 
-    private List<StudyCafePass> findPassCandidatesBy(StudyCafePassType studyCafePassType) {
-        List<StudyCafePass> allPasses = studyCafeFileHandler.readStudyCafePasses();
-        return allPasses.stream()
-                .filter(pass -> pass.isSamePathType(studyCafePassType))
-                .toList();
+    private StudyCafePasses findPassCandidatesBy(StudyCafePassType studyCafePassType) {
+        StudyCafePasses allPasses = studyCafeFileHandler.readStudyCafePasses();
+        return allPasses.findAllBy(studyCafePassType);
     }
 
     private Optional<StudyCafeLockerPass> selectLockerPass(StudyCafePass selectedPass) {
@@ -56,9 +51,10 @@ public class StudyCafePassMachine {
             return Optional.empty();
         }
 
-        StudyCafeLockerPass lockerPassCandidate = findLockerPassCandidateBy(selectedPass);
+        Optional<StudyCafeLockerPass> lockerPassCandidateOptional = findLockerPassCandidateBy(selectedPass);
 
-        if (lockerPassCandidate != null) {
+        if (lockerPassCandidateOptional.isPresent()) {
+            StudyCafeLockerPass lockerPassCandidate = lockerPassCandidateOptional.get();
             boolean isLockerSelected = ioHandler.askUserLockerPassBy(lockerPassCandidate);
 
 
@@ -70,13 +66,10 @@ public class StudyCafePassMachine {
         return Optional.empty();
     }
 
-    private StudyCafeLockerPass findLockerPassCandidateBy(StudyCafePass pass) {
-        List<StudyCafeLockerPass> allLockerPasses = studyCafeFileHandler.readLockerPasses();
+    private Optional<StudyCafeLockerPass> findLockerPassCandidateBy(StudyCafePass pass) {
+        StudyCafeLockerPasses allLockerPasses = studyCafeFileHandler.readLockerPasses();
 
-        return allLockerPasses.stream()
-                .filter(pass::isSameDurationAndPathType)
-                .findFirst()
-                .orElse(null);
+        return allLockerPasses.findFirstBy(pass);
     }
 
 }
