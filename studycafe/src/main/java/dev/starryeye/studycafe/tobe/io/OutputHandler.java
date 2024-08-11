@@ -1,7 +1,7 @@
 package dev.starryeye.studycafe.tobe.io;
 
 import dev.starryeye.studycafe.tobe.model.StudyCafeLockerPass;
-import dev.starryeye.studycafe.tobe.model.StudyCafePass;
+import dev.starryeye.studycafe.tobe.model.StudyCafeSeatPass;
 import dev.starryeye.studycafe.tobe.model.StudyCafePassType;
 
 import java.util.List;
@@ -23,11 +23,11 @@ public class OutputHandler {
         System.out.println("1. 시간 이용권(자유석) | 2. 주단위 이용권(자유석) | 3. 1인 고정석");
     }
 
-    public void showPassListForSelection(List<StudyCafePass> passes) {
+    public void showPassListForSelection(List<StudyCafeSeatPass> passes) {
         System.out.println();
         System.out.println("이용권 목록");
         for (int index = 0; index < passes.size(); index++) {
-            StudyCafePass pass = passes.get(index);
+            StudyCafeSeatPass pass = passes.get(index);
             System.out.println(String.format("%s. ", index + 1) + display(pass));
         }
     }
@@ -43,11 +43,11 @@ public class OutputHandler {
         System.out.println("1. 예 | 2. 아니오");
     }
 
-    public void showPassOrderSummary(StudyCafePass selectedPass) {
+    public void showPassOrderSummary(StudyCafeSeatPass selectedPass) {
         this.showPassOrderSummary(selectedPass, null);
     }
 
-    public void showPassOrderSummary(StudyCafePass selectedPass, StudyCafeLockerPass lockerPass) {
+    public void showPassOrderSummary(StudyCafeSeatPass selectedPass, StudyCafeLockerPass lockerPass) {
         System.out.println();
         System.out.println("이용 내역");
         System.out.println("이용권: " + display(selectedPass));
@@ -70,7 +70,7 @@ public class OutputHandler {
         System.out.println(message);
     }
 
-    private String display(StudyCafePass pass) {
+    private String display(StudyCafeSeatPass pass) {
 
         StudyCafePassType passType = pass.getPassType();
         int duration = pass.getDuration();

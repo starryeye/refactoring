@@ -1,6 +1,6 @@
 package dev.starryeye.studycafe.tobe.model;
 
-public class StudyCafeLockerPass {
+public class StudyCafeLockerPass implements StudyCafePass {
 
     private final StudyCafePassType passType;
     private final int duration;
@@ -24,14 +24,17 @@ public class StudyCafeLockerPass {
         return this.passType == passType;
     }
 
+    @Override
     public StudyCafePassType getPassType() {
         return passType;
     }
 
+    @Override
     public int getDuration() {
         return duration;
     }
 
+    @Override
     public int getPrice() {
         return price;
     }
