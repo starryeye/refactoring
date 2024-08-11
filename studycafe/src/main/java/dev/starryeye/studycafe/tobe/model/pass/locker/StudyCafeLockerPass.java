@@ -1,4 +1,7 @@
-package dev.starryeye.studycafe.tobe.model;
+package dev.starryeye.studycafe.tobe.model.pass.locker;
+
+import dev.starryeye.studycafe.tobe.model.pass.StudyCafePass;
+import dev.starryeye.studycafe.tobe.model.pass.StudyCafePassType;
 
 public class StudyCafeLockerPass implements StudyCafePass {
 

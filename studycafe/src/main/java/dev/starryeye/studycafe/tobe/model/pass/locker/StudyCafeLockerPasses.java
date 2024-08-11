@@ -1,4 +1,6 @@
-package dev.starryeye.studycafe.tobe.model;
+package dev.starryeye.studycafe.tobe.model.pass.locker;
+
+import dev.starryeye.studycafe.tobe.model.pass.seat.StudyCafeSeatPass;
 
 import java.util.List;
 import java.util.Optional;

@@ -3,7 +3,11 @@ package dev.starryeye.studycafe.tobe;
 import dev.starryeye.studycafe.tobe.exception.AppException;
 import dev.starryeye.studycafe.tobe.io.StudyCafeFileHandler;
 import dev.starryeye.studycafe.tobe.io.StudyCafeIOHandler;
-import dev.starryeye.studycafe.tobe.model.*;
+import dev.starryeye.studycafe.tobe.model.pass.*;
+import dev.starryeye.studycafe.tobe.model.pass.locker.StudyCafeLockerPass;
+import dev.starryeye.studycafe.tobe.model.pass.locker.StudyCafeLockerPasses;
+import dev.starryeye.studycafe.tobe.model.pass.seat.StudyCafeSeatPass;
+import dev.starryeye.studycafe.tobe.model.pass.seat.StudyCafeSeatPasses;
 
 import java.util.Optional;
 

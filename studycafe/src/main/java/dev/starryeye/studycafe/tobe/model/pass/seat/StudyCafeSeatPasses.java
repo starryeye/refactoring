@@ -1,4 +1,6 @@
-package dev.starryeye.studycafe.tobe.model;
+package dev.starryeye.studycafe.tobe.model.pass.seat;
+
+import dev.starryeye.studycafe.tobe.model.pass.StudyCafePassType;
 
 import java.util.ArrayList;
 import java.util.List;

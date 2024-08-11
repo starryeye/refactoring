@@ -1,8 +1,8 @@
 package dev.starryeye.studycafe.tobe.io;
 
 import dev.starryeye.studycafe.tobe.exception.AppException;
-import dev.starryeye.studycafe.tobe.model.StudyCafeSeatPass;
-import dev.starryeye.studycafe.tobe.model.StudyCafePassType;
+import dev.starryeye.studycafe.tobe.model.pass.seat.StudyCafeSeatPass;
+import dev.starryeye.studycafe.tobe.model.pass.StudyCafePassType;
 
 import java.util.List;
 import java.util.Scanner;

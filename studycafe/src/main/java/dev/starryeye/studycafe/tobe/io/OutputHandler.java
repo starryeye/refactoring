@@ -1,9 +1,9 @@
 package dev.starryeye.studycafe.tobe.io;
 
-import dev.starryeye.studycafe.tobe.model.StudyCafeLockerPass;
-import dev.starryeye.studycafe.tobe.model.StudyCafePass;
-import dev.starryeye.studycafe.tobe.model.StudyCafeSeatPass;
-import dev.starryeye.studycafe.tobe.model.StudyCafePassType;
+import dev.starryeye.studycafe.tobe.model.pass.locker.StudyCafeLockerPass;
+import dev.starryeye.studycafe.tobe.model.pass.StudyCafePass;
+import dev.starryeye.studycafe.tobe.model.pass.seat.StudyCafeSeatPass;
+import dev.starryeye.studycafe.tobe.model.pass.StudyCafePassType;
 
 import java.util.List;
 

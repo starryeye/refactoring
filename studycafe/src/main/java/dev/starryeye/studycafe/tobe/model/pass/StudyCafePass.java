@@ -1,4 +1,4 @@
-package dev.starryeye.studycafe.tobe.model;
+package dev.starryeye.studycafe.tobe.model.pass;
 
 public interface StudyCafePass {
 
