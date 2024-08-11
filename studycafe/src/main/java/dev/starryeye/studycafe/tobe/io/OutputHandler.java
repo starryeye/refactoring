@@ -1,6 +1,7 @@
 package dev.starryeye.studycafe.tobe.io;
 
 import dev.starryeye.studycafe.tobe.model.StudyCafeLockerPass;
+import dev.starryeye.studycafe.tobe.model.StudyCafePass;
 import dev.starryeye.studycafe.tobe.model.StudyCafeSeatPass;
 import dev.starryeye.studycafe.tobe.model.StudyCafePassType;
 
@@ -70,29 +71,11 @@ public class OutputHandler {
         System.out.println(message);
     }
 
-    private String display(StudyCafeSeatPass pass) {
+    private String display(StudyCafePass pass) {
 
         StudyCafePassType passType = pass.getPassType();
         int duration = pass.getDuration();
         int price = pass.getPrice();
-
-        if (passType == StudyCafePassType.HOURLY) {
-            return String.format("%s시간권 - %d원", duration, price);
-        }
-        if (passType == StudyCafePassType.WEEKLY) {
-            return String.format("%s주권 - %d원", duration, price);
-        }
-        if (passType == StudyCafePassType.FIXED) {
-            return String.format("%s주권 - %d원", duration, price);
-        }
-        return "";
-    }
-
-    public String display(StudyCafeLockerPass lockerPass) {
-
-        StudyCafePassType passType = lockerPass.getPassType();
-        int duration = lockerPass.getDuration();
-        int price = lockerPass.getPrice();
 
         if (passType == StudyCafePassType.HOURLY) {
             return String.format("%s시간권 - %d원", duration, price);
