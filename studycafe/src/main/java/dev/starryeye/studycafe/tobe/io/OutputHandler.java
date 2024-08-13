@@ -1,11 +1,13 @@
 package dev.starryeye.studycafe.tobe.io;
 
+import dev.starryeye.studycafe.tobe.model.pass.StudyCafePassOrder;
 import dev.starryeye.studycafe.tobe.model.pass.locker.StudyCafeLockerPass;
 import dev.starryeye.studycafe.tobe.model.pass.StudyCafePass;
 import dev.starryeye.studycafe.tobe.model.pass.seat.StudyCafeSeatPass;
 import dev.starryeye.studycafe.tobe.model.pass.StudyCafePassType;
 
 import java.util.List;
+import java.util.Optional;
 
 public class OutputHandler {
 
@@ -44,25 +46,24 @@ public class OutputHandler {
         System.out.println("1. 예 | 2. 아니오");
     }
 
-    public void showPassOrderSummary(StudyCafeSeatPass selectedPass) {
-        this.showPassOrderSummary(selectedPass, null);
-    }
+    public void showPassOrderSummary(StudyCafePassOrder passOrder) {
 
-    public void showPassOrderSummary(StudyCafeSeatPass selectedPass, StudyCafeLockerPass lockerPass) {
+        StudyCafeSeatPass seatPass = passOrder.getSeatPass();
+        Optional<StudyCafeLockerPass> optionalLockerPass = passOrder.getLockerPass();
+
         System.out.println();
         System.out.println("이용 내역");
-        System.out.println("이용권: " + display(selectedPass));
-        if (lockerPass != null) {
-            System.out.println("사물함: " + display(lockerPass));
-        }
+        System.out.println("이용권: " + display(seatPass));
+        optionalLockerPass.ifPresent(lockerPass ->
+                System.out.println("사물함: " + display(lockerPass))
+        );
 
-        double discountRate = selectedPass.getDiscountRate();
-        int discountPrice = (int) (selectedPass.getPrice() * discountRate);
+        int discountPrice = passOrder.calculateDiscountPrice();
         if (discountPrice > 0) {
             System.out.println("이벤트 할인 금액: " + discountPrice + "원");
         }
 
-        int totalPrice = selectedPass.getPrice() - discountPrice + (lockerPass != null ? lockerPass.getPrice() : 0);
+        int totalPrice = passOrder.calculateTotalPrice();
         System.out.println("총 결제 금액: " + totalPrice + "원");
         System.out.println();
     }

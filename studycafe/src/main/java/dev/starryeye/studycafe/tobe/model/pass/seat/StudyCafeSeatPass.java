@@ -22,6 +22,10 @@ public class StudyCafeSeatPass implements StudyCafePass {
         return new StudyCafeSeatPass(passType, duration, price, discountRate);
     }
 
+    public int calculateDiscountPrice() {
+        return (int) (this.price * this.discountRate);
+    }
+
     public boolean isSamePathType(StudyCafePassType passType) {
         return this.passType == passType;
     }
